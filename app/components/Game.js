@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 //import { Button } from 'react-bootstrap';
 import AlertDialogSlide from "./ScoreBoard";
 //import ScoreBoard from "./ScoreBoard";
 
+
+
+//Player
 const Square = ({ x, y, size }) => {
   return (
     <div
@@ -19,6 +22,8 @@ const Square = ({ x, y, size }) => {
   );
 };
 
+
+//Coins
 const Circle = ({ x, y, size }) => {
   return (
     <div
@@ -35,6 +40,7 @@ const Circle = ({ x, y, size }) => {
   );
 };
 
+//Enemy
 const Enemy = ({ x, y, size }) => {
   return (
     <div
@@ -52,6 +58,7 @@ const Enemy = ({ x, y, size }) => {
   );
 };
 
+//Ground
 const Box = ({ children, width, height }) => {
   return (
     <div
@@ -60,7 +67,7 @@ const Box = ({ children, width, height }) => {
         height: height,
         border: "4px solid black",
         position: "relative",
-        marginTop:"28px"
+        marginTop: "28px"
       }}
     >
       {children}
@@ -68,24 +75,26 @@ const Box = ({ children, width, height }) => {
   );
 };
 
+
+
 const panelStyle = {
   display: 'flex',
   justifyContent: 'space-between'
 }
 
 const Game = () => {
-  const [x, setX] = useState(0);
+  const [x, setX] = useState(0); //player's position
   const [y, setY] = useState(0);
-  const [cx, setCx] = useState(0);
+  const [cx, setCx] = useState(0); //coin's position
   const [cy, setCy] = useState(0);
-  const [ex, setEx] = useState(425);
+  const [ex, setEx] = useState(425); //enemy's position
   const [ey, setEy] = useState(355);
-  const [pt, setPt] = useState(-1);
+  const [pt, setPt] = useState(-1); //score point
 
-  const size = 50;
-  const cSize = 25;
-  const eSize = 70;
-  const step = 10;
+  const size = 50; //player size
+  const cSize = 25; //coin size
+  const eSize = 70; //enemy size
+  const step = 10;  //player movement
   const maxX = 742 - size;
   const maxY = 672 - size;
 
@@ -216,20 +225,102 @@ const Game = () => {
   }, [ex, ey]);
 
 
+
+
+  const handleMovement = (direction) => {
+    switch (direction) {
+      case "u":
+        setY(Math.max(0, y - step));
+        break;
+      case "d":
+        setY(Math.min(maxY, y + step));
+        break;
+      case "l":
+        setX(Math.max(0, x - step));
+        break;
+      case "r":
+        setX(Math.min(maxX, x + step));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize(); // Initial check
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div>
-      <Box width={750} height={680}>
-        <Square x={x} y={y} size={size} />
-        <Circle x={cx} y={cy} size={cSize} />
-        <Enemy x={ex} y={ey} size={eSize} /> 
-      </Box>
-      <div style={panelStyle}>
-        <AlertDialogSlide open={open} point={pt} handleClickOpen={handleClickOpen} handleClose={handleClose}></AlertDialogSlide>
-        <h2 style={{ margin: 13 }}>Point:{pt}</h2>
-        <h2 style={{ margin: 13 }}>{min < 10 ? `0${min}` : min}:{sec < 10 ? `0${sec}` : sec}</h2>
+    <>
+      <h1 className='header'>One Min Game :)</h1>
+      <div className='MainBox'>
+        <div>
+          <Box width={750} height={680}>
+            <Square x={x} y={y} size={size} />
+            <Circle x={cx} y={cy} size={cSize} />
+            <Enemy x={ex} y={ey} size={eSize} />
+          </Box>
+          <div style={panelStyle}>
+            <AlertDialogSlide open={open} point={pt} handleClickOpen={handleClickOpen} handleClose={handleClose}></AlertDialogSlide>
+            <h2 style={{ margin: 13 }}>Point:{pt}</h2>
+            <h2 style={{ margin: 13 }}>{min < 10 ? `0${min}` : min}:{sec < 10 ? `0${sec}` : sec}</h2>
+          </div>
+        </div>
       </div>
-    </div>
+      {isMobile && <MbCtrl OnMove={handleMovement} />}
+    </>
   );
 };
 
 export default Game;
+
+
+export function MbCtrl({ OnMove,x,y }) {
+
+  const handleTouchStart = (dir) => {
+    OnMove(dir);
+  }
+  
+  
+
+  return (
+    <div className="mobile_ctrl grid grid-cols-3 gap-1">
+      <button
+        onClick={() => handleTouchStart("u")}
+        className="btn col-start-2 bg-blue-500 hover:bg-blue-700 text-white font-bold text-2xl rounded-full"
+      >
+        up
+      </button>
+      <button
+        onClick={() => handleTouchStart("l")}
+        className="btn row-start-2 col-start-1 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
+      >
+        left
+      </button>
+      <button
+       onClick={() => handleTouchStart("r")}
+        className="btn row-start-2 col-start-3 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
+      >
+        right
+      </button>
+      <button
+        onClick={() => handleTouchStart("d")}
+        className="btn row-start-3 col-start-2 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
+      >
+        down
+      </button>
+    </div>
+  );
+}
