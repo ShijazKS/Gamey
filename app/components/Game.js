@@ -289,7 +289,7 @@ export default Game;
 
 export function MbCtrl({ OnMove,x,y }) {
 
-  const handleTouchStart = (dir) => {
+  const handleTouch = (dir) => {
     OnMove(dir);
   }
   
@@ -298,25 +298,25 @@ export function MbCtrl({ OnMove,x,y }) {
   return (
     <div className="mobile_ctrl grid grid-cols-3 gap-1">
       <button
-        onClick={() => handleTouchStart("u")}
+        onClick={() => handleTouch("u")}
         className="btn col-start-2 bg-blue-500 hover:bg-blue-700 text-white font-bold text-2xl rounded-full"
       >
         up
       </button>
       <button
-        onClick={() => handleTouchStart("l")}
+        onClick={() => handleTouch("l")}
         className="btn row-start-2 col-start-1 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
       >
         left
       </button>
       <button
-       onClick={() => handleTouchStart("r")}
+       onClick={() => handleTouch("r")}
         className="btn row-start-2 col-start-3 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
       >
         right
       </button>
       <button
-        onClick={() => handleTouchStart("d")}
+        onClick={() => handleTouch("d")}
         className="btn row-start-3 col-start-2 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
       >
         down
