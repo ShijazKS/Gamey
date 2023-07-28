@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 //import { Button } from 'react-bootstrap';
 import AlertDialogSlide from "./ScoreBoard";
 //import ScoreBoard from "./ScoreBoard";
+import { Checkbox } from '@mui/material';
 
 
 
@@ -248,19 +249,10 @@ const Game = () => {
 
   const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
 
-    handleResize(); // Initial check
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const ViewChange =() => {
+    setIsMobile(!isMobile);
+  }
 
   return (
     <>
@@ -275,11 +267,16 @@ const Game = () => {
           <div style={panelStyle}>
             <AlertDialogSlide open={open} point={pt} handleClickOpen={handleClickOpen} handleClose={handleClose}></AlertDialogSlide>
             <h2 style={{ margin: 13 }}>Point:{pt}</h2>
+
             <h2 style={{ margin: 13 }}>{min < 10 ? `0${min}` : min}:{sec < 10 ? `0${sec}` : sec}</h2>
           </div>
         </div>
       </div>
       {isMobile && <MbCtrl OnMove={handleMovement} />}
+      <Checkbox
+        onChange={ViewChange}
+        inputProps={{ 'aria-label': 'controlled' }} color="success"
+      />
     </>
   );
 };
@@ -287,13 +284,13 @@ const Game = () => {
 export default Game;
 
 
-export function MbCtrl({ OnMove,x,y }) {
+export function MbCtrl({ OnMove }) {
 
   const handleTouch = (dir) => {
     OnMove(dir);
   }
-  
-  
+
+
 
   return (
     <div className="mobile_ctrl grid grid-cols-3 gap-1">
@@ -310,7 +307,7 @@ export function MbCtrl({ OnMove,x,y }) {
         left
       </button>
       <button
-       onClick={() => handleTouch("r")}
+        onClick={() => handleTouch("r")}
         className="btn row-start-2 col-start-3 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
       >
         right
