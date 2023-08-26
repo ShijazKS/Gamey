@@ -7,17 +7,20 @@ import ScoreBoard from "./ScoreBoard";
 
 
 //Player
-const Square = ({ x, y, size }) => {
+const Square = ({ x, y, size,gradientColors }) => {
+  const gradient = `radial-gradient(circle, ${gradientColors.join(', ')})`;
   return (
     <div
       style={{
         width: size,
         height: size,
-        backgroundColor: "#471147",
+        // backgroundColor: "#1abc9c",
+        background: gradient,
         position: "absolute",
         left: x,
         top: y,
         borderRadius: "10%",
+        border: "0.5px solid #fff",
       }}
     />
   );
@@ -32,7 +35,7 @@ const Circle = ({ x, y, size }) => {
       style={{
         width: size,
         height: size,
-        backgroundColor: "#ec14b7",
+        backgroundColor: " #d35400",
         position: "absolute",
         left: x,
         top: y,
@@ -44,18 +47,20 @@ const Circle = ({ x, y, size }) => {
 };
 
 //Enemy
-const Enemy = ({ x, y, size,color }) => {
+const Enemy = ({ x, y, size,gradientColors }) => {
+  const gradient = `radial-gradient(circle, ${gradientColors.join(', ')})`;
   return (
     <div
       style={{
         width: size,
         height: size,
-        backgroundColor: color,
+        // backgroundColor: color,
+        background: gradient, // Apply the gradient as the background
         position: "absolute",
         left: x,
         top: y,
         borderRadius: "40%",
-        border: "1px solid #800000",
+        border: "1px solid #fff",
       }}
     />
   );
@@ -88,11 +93,11 @@ const panelStyle = {
 const Game = () => {
   const [x, setX] = useState(0); //player's position
   const [y, setY] = useState(0);
-  const [cx, setCx] = useState(0); //coin's position
-  const [cy, setCy] = useState(0);
+  const [cx, setCx] = useState(5); //coin's position
+  const [cy, setCy] = useState(5);
   const [ex, setEx] = useState(630); //enemy's position
   const [ey, setEy] = useState(350);
-  const [ex1, setEx1] = useState(10); //enemy's position
+  const [ex1, setEx1] = useState(20); //enemy's position
   const [ey1, setEy1] = useState(350);
   const [pt, setPt] = useState(-1); //score point
 
@@ -191,6 +196,17 @@ const Game = () => {
       setCy(Math.floor(Math.random() * (680 - cSize)));
       setPt(pt + 1);
     }
+
+    if (ex + eSize > cx && ex < cx + cSize && ey + eSize > cy && ey < cy + cSize) {
+      setCx(Math.floor(Math.random() * (750 - cSize)));
+      setCy(Math.floor(Math.random() * (680 - cSize)));
+    }
+
+    if (ex1 + eSize > cx && ex1 < cx + cSize && ey1 + eSize > cy && ey1 < cy + cSize) {
+      setCx(Math.floor(Math.random() * (750 - cSize)));
+      setCy(Math.floor(Math.random() * (680 - cSize)));
+    }
+
   }, [x, y, cx, cy, size, cSize, ex, ey,ex1,ey1, eSize]);
 
   //to move enemy
@@ -241,7 +257,7 @@ const Game = () => {
         }
       }
 
-    }, 200);
+    }, 250);
 
 
     return () => {
@@ -255,14 +271,14 @@ const Game = () => {
   return (
     <>
       <h1 className='header'>One Min Game :)</h1>
-      <p id="minitext" className="text-gray-300 italic">can you score above 15 points?</p>
+      <p id="minitext" className="text-gray-800 italic">can you score above 15 points?</p>
       <div className='MainBox'>
         <div>
           <Box width={750} height={680}>
-            <Square x={x} y={y} size={size} />
+            <Square x={x} y={y} size={size} gradientColors={['#16a085','#0e6655' ]} />
             <Circle x={cx} y={cy} size={cSize} />
-            <Enemy x={ex} y={ey} size={eSize} color={"#990000"} />
-            <Enemy x={ex1} y={ey1} size={eSize} color={"#000"} />
+            <Enemy x={ex} y={ey} size={eSize} gradientColors={['#c0392b','#7b241c']} />
+            <Enemy x={ex1} y={ey1} size={eSize} gradientColors={['#1F618D','#154360']} />
           </Box>
             <ScoreBoard open={open} point={pt} handleClickOpen={handleClickOpen} handleClose={handleClose}/>
           <div style={panelStyle}>
