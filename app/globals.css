@@ -62,6 +62,7 @@ main{
 }
 
 #minitext{
-  position: relative;
-  top: -25px;
+   position: relative;
+  top: -13px;
+  z-index: 100;
 }
