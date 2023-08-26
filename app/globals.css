@@ -36,14 +36,18 @@ body {
   font-size: 30px;
 }
 
-.mobile_ctrl{
-  position: absolute;
-  bottom: 100px;
-  left: auto;
-  right: auto;
+@keyframes blinker {
+  25% {
+    opacity: 0.5;
+  }
 }
 
 .btn{
  width:110px;
  height:90px;
+}
+
+#minitext{
+  position: relative;
+  top: -25px;
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 //import { Button } from 'react-bootstrap';
-import AlertDialogSlide from "./ScoreBoard";
-//import ScoreBoard from "./ScoreBoard";
-import { Checkbox } from '@mui/material';
+//import AlertDialogSlide from "./ScoreBoard";
+import ScoreBoard from "./ScoreBoard";
+// import { Checkbox } from '@mui/material';
 
 
 
@@ -28,6 +28,7 @@ const Square = ({ x, y, size }) => {
 const Circle = ({ x, y, size }) => {
   return (
     <div
+      className="blink"
       style={{
         width: size,
         height: size,
@@ -36,19 +37,20 @@ const Circle = ({ x, y, size }) => {
         left: x,
         top: y,
         borderRadius: "50%",
+        animation: "blinker 0.7s linear infinite",
       }}
     />
   );
 };
 
 //Enemy
-const Enemy = ({ x, y, size }) => {
+const Enemy = ({ x, y, size,color }) => {
   return (
     <div
       style={{
         width: size,
         height: size,
-        backgroundColor: "#990000",
+        backgroundColor: color,
         position: "absolute",
         left: x,
         top: y,
@@ -88,8 +90,10 @@ const Game = () => {
   const [y, setY] = useState(0);
   const [cx, setCx] = useState(0); //coin's position
   const [cy, setCy] = useState(0);
-  const [ex, setEx] = useState(425); //enemy's position
-  const [ey, setEy] = useState(355);
+  const [ex, setEx] = useState(630); //enemy's position
+  const [ey, setEy] = useState(350);
+  const [ex1, setEx1] = useState(10); //enemy's position
+  const [ey1, setEy1] = useState(350);
   const [pt, setPt] = useState(-1); //score point
 
   const size = 50; //player size
@@ -175,33 +179,45 @@ const Game = () => {
       // window.location.reload();
     }
 
+    if (ex1 + eSize > x && ex1 < x + size && ey1 + eSize > y && ey1 < y + size) {
+      // alert(`Enemy Catched!...Your Point is: ${pt}`);
+      handleClickOpen();
+      // window.location.reload();
+    }
+
     //cirle
     if (x + size > cx && x < cx + cSize && y + size > cy && y < cy + cSize) {
       setCx(Math.floor(Math.random() * (750 - cSize)));
       setCy(Math.floor(Math.random() * (680 - cSize)));
       setPt(pt + 1);
     }
-  }, [x, y, cx, cy, size, cSize, ex, ey, eSize]);
+  }, [x, y, cx, cy, size, cSize, ex, ey,ex1,ey1, eSize]);
 
   //to move enemy
   useEffect(() => {
     const intervalId = setInterval(() => {
       let newX = ex;
       let newY = ey;
+      let newX1 = ex1;
+      let newY1 = ey1;
       const randomDirection = Math.floor(Math.random() * 4);
 
       switch (randomDirection) {
         case 0:
           newX = ex + 40;
+          newY1 = ey1 - 40;
           break;
         case 1:
           newX = ex - 40;
+          newY1 = ey1 + 40;
           break;
         case 2:
           newY = ey + 40;
+          newX1 = ex1 - 40;
           break;
         case 3:
           newY = ey - 40;
+          newX1 = ex1 + 40;
           break;
         default:
           break;
@@ -215,6 +231,14 @@ const Game = () => {
         if (newY >= 0 && newY <= maxY) {
           setEy(newY);
         }
+
+        if (newX1 >= 0 && newX1 <= maxX) {
+          setEx1(newX1);
+        }
+
+        if (newY1 >= 0 && newY1 <= maxY) {
+          setEy1(newY1);
+        }
       }
 
     }, 200);
@@ -223,60 +247,31 @@ const Game = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [ex, ey]);
+  }, [ex, ey,ex1,ey1]);
 
 
-
-
-  const handleMovement = (direction) => {
-    switch (direction) {
-      case "u":
-        setY(Math.max(0, y - step));
-        break;
-      case "d":
-        setY(Math.min(maxY, y + step));
-        break;
-      case "l":
-        setX(Math.max(0, x - step));
-        break;
-      case "r":
-        setX(Math.min(maxX, x + step));
-        break;
-      default:
-        break;
-    }
-  };
-
-  const [isMobile, setIsMobile] = useState(false);
-
-
-  const ViewChange =() => {
-    setIsMobile(!isMobile);
-  }
+  
 
   return (
     <>
       <h1 className='header'>One Min Game :)</h1>
+      <p id="minitext" className="text-gray-300 italic">can you score above 15 points?</p>
       <div className='MainBox'>
         <div>
           <Box width={750} height={680}>
             <Square x={x} y={y} size={size} />
             <Circle x={cx} y={cy} size={cSize} />
-            <Enemy x={ex} y={ey} size={eSize} />
+            <Enemy x={ex} y={ey} size={eSize} color={"#990000"} />
+            <Enemy x={ex1} y={ey1} size={eSize} color={"#000"} />
           </Box>
+            <ScoreBoard open={open} point={pt} handleClickOpen={handleClickOpen} handleClose={handleClose}/>
           <div style={panelStyle}>
-            <AlertDialogSlide open={open} point={pt} handleClickOpen={handleClickOpen} handleClose={handleClose}></AlertDialogSlide>
             <h2 style={{ margin: 13 }}>Point:{pt}</h2>
 
             <h2 style={{ margin: 13 }}>{min < 10 ? `0${min}` : min}:{sec < 10 ? `0${sec}` : sec}</h2>
           </div>
         </div>
       </div>
-      {isMobile && <MbCtrl OnMove={handleMovement} />}
-      <Checkbox
-        onChange={ViewChange}
-        inputProps={{ 'aria-label': 'controlled' }} color="success"
-      />
     </>
   );
 };
@@ -284,40 +279,3 @@ const Game = () => {
 export default Game;
 
 
-export function MbCtrl({ OnMove }) {
-
-  const handleTouch = (dir) => {
-    OnMove(dir);
-  }
-
-
-
-  return (
-    <div className="mobile_ctrl grid grid-cols-3 gap-1">
-      <button
-        onClick={() => handleTouch("u")}
-        className="btn col-start-2 bg-blue-500 hover:bg-blue-700 text-white font-bold text-2xl rounded-full"
-      >
-        up
-      </button>
-      <button
-        onClick={() => handleTouch("l")}
-        className="btn row-start-2 col-start-1 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
-      >
-        left
-      </button>
-      <button
-        onClick={() => handleTouch("r")}
-        className="btn row-start-2 col-start-3 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
-      >
-        right
-      </button>
-      <button
-        onClick={() => handleTouch("d")}
-        className="btn row-start-3 col-start-2 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold rounded-full"
-      >
-        down
-      </button>
-    </div>
-  );
-}

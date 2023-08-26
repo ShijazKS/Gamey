@@ -24,11 +24,11 @@ const ScoreBoard = ({open,point,handleClickOpen,handleClose}) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle sx={{m:4,ml:10,p:0}}>{"Game End !"}</DialogTitle>
+        <DialogTitle sx={{m:4,ml:10,p:0}}><b>{"Game End !"}</b></DialogTitle>
         <DialogContent sx={{ml:10,mr:10,p:0}}>
           <DialogContentText id="alert-dialog-slide-description">
-          {`You get ${point} points`} 
-           <p> {"Play Again :) "}</p>
+          <p className='text-black'>{`You get`}<span className='text-red-600'>{` ${point} `}</span>{`points`} </p>
+           <p className='text-green-700'> {"Play Again :) "}</p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
