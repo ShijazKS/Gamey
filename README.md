@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Gamey
 
-## Getting Started
+This is a small box game, offering an interactive web experience. The mission is to collect as many coins as possible within one minute while avoiding two enemies. This game provides a challenge to score more than 15 points, making it reminiscent of the classic Snake game on old Nokia phones. Please note that this game is designed for PC play only, as mobile controls are not supported.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+![gamify](https://github.com/ShijazKS/Gamey/assets/70143317/ced34ea2-a978-4ed4-b37c-b83960a2b6f8)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Table of Contents
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- [Gameplay Instructions](#gameplay-instructions)
+- [Scoring and Winning](#scoring-and-winning)
+- [Usage](#usage)
+- [Note](#note)
+- [Contribute](#contribute)
+- [License](#license)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Gameplay Instructions
 
-## Learn More
+- **Controls**: Use arrow keys to move the player.
 
-To learn more about Next.js, take a look at the following resources:
+## Scoring and Winning
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To win, aim to collect more than 15 points within one minute. Dodge the enemies while grabbing as many coins as you can.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Note
+Please note that this game is optimized for PC play and may not function properly on mobile devices due to control issues.
 
-## Deploy on Vercel
+## Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+You can use the hosted version of this game at [https://gamey-sage.vercel.app](https://gamey-sage.vercel.app). Simply follow these steps:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Open a web browser and go to [https://gamey-sage.vercel.app](https://gamey-sage.vercel.app).
+2. Use arrow keys to control the player and collect coins.
+
+## Contribute
+ Contributions are welcome! Fork the repository and submit a pull request.
+
+## License
+This project is licensed under the [GNU GENERAL PUBLIC LICENSE]() - see the [LICENSE](https://github.com/ShijazKS/Gamey/blob/main/LICENSE) file for details.
